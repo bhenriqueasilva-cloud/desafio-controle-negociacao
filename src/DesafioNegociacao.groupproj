@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{D3B7F3E6-B825-42B8-B3EA-C91FC613BAAE}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ControleNegociacoes.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Tests\ControleNegociacoesTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ControleNegociacoes">
+        <MSBuild Projects="ControleNegociacoes.dproj"/>
+    </Target>
+    <Target Name="ControleNegociacoes:Clean">
+        <MSBuild Projects="ControleNegociacoes.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ControleNegociacoes:Make">
+        <MSBuild Projects="ControleNegociacoes.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ControleNegociacoesTests">
+        <MSBuild Projects="Tests\ControleNegociacoesTests.dproj"/>
+    </Target>
+    <Target Name="ControleNegociacoesTests:Clean">
+        <MSBuild Projects="Tests\ControleNegociacoesTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ControleNegociacoesTests:Make">
+        <MSBuild Projects="Tests\ControleNegociacoesTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ControleNegociacoes;ControleNegociacoesTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ControleNegociacoes:Clean;ControleNegociacoesTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ControleNegociacoes:Make;ControleNegociacoesTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
