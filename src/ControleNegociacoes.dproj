@@ -77,8 +77,8 @@
         <Icon_MainIcon>Resources\Images\Icons\Aliari2.ico</Icon_MainIcon>
         <UWP_DelphiLogo44>Resources\Images\Icons\Aliari2.ico</UWP_DelphiLogo44>
         <UWP_DelphiLogo150>C:\Users\Bruno\Downloads\Captura de tela 2026-07-17 094014.png</UWP_DelphiLogo150>
-        <DCC_DcuOutput>..\bin\$(Platform)\$(Config)</DCC_DcuOutput>
-        <DCC_ExeOutput>..\bin\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_DcuOutput>..\bin</DCC_DcuOutput>
+        <DCC_ExeOutput>..\bin</DCC_ExeOutput>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
