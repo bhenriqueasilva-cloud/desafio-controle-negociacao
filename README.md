@@ -1,175 +1,115 @@
-﻿# Sistema de Controle de NegociaÃ§Ãµes - Aliare
+﻿# Sistema de Controle de Negociações - Aliare
 
-## DescriÃ§Ã£o
-Sistema para controle de negociaÃ§Ãµes entre produtores e distribuidores de insumos agrÃ­colas, desenvolvido em Delphi Community Edition com banco de dados Firebird 2.1.
+## Descrição
+Sistema completo para controle de negociações entre produtores e distribuidores de insumos agrícolas. O projeto foi integralmente desenvolvido em Delphi Community Edition, utilizando o banco de dados Firebird 2.1 e componentização nativa VCL/IBX.
 
 ## Requisitos
+### Software Necessário
+- **Delphi Community Edition**
+- **Firebird 2.1** - [Download Oficial](http://www.firebirdsql.org/en/firebird-2-1/)
+- **IBX (InterBase Express)** - Componentes nativos de dados do Delphi
 
-### Software NecessÃ¡rio
-- **Delphi Community Edition** (versÃ£o mais recente)
-- **Firebird 2.1** - [Download](http://www.firebirdsql.org/en/firebird-2-1/)
-- **IBX (InterBase Express)** - Componentes nativos do Delphi
-
-### ConfiguraÃ§Ã£o do Banco de Dados
-1. Instale o Firebird 2.1
-2. O banco de dados jÃ¡ foi criado em: `data/database/NEGOCIACOES.FDB`
-3. Scripts SQL disponÃ­veis em: `docs/database/`
+### Configuração do Banco de Dados
+1. Instale o Firebird 2.1 em modo super-server/arquitetura padrão.
+2. O banco de dados de produção está localizado em: `data/database/NEGOCIACOES.FDB`
+3. Os scripts SQL estruturais estão disponíveis em: `docs/database/`
 
 ## Estrutura do Projeto
-
-```
-Desafio TÃ©cnico/
-â”œâ”€â”€ bin/                    # BinÃ¡rios compilados
-â”œâ”€â”€ data/                   # Arquivos do banco de dados
-â”‚   â”œâ”€â”€ database/          # Arquivo .fdb
-â”‚   â””â”€â”€ backups/           # Backups
-â”œâ”€â”€ docs/                   # DocumentaÃ§Ã£o
-â”‚   â”œâ”€â”€ database/          # Scripts SQL
-â”‚   â”œâ”€â”€ diagramas/         # Diagramas do sistema
-â”‚   â””â”€â”€ ESTRUTURA_PROJETO.md
-â”œâ”€â”€ lib/                    # Bibliotecas externas
-â”œâ”€â”€ src/                    # CÃ³digo fonte
-â”‚   â”œâ”€â”€ App/              # Camada de ApresentaÃ§Ã£o (VCL)
-â”‚   â”œâ”€â”€ Core/             # Camada de DomÃ­nio
-â”‚   â”œâ”€â”€ Infra/            # Camada de Infraestrutura
-â”‚   â”œâ”€â”€ Resources/        # Recursos (imagens, relatÃ³rios)
-â”‚   â””â”€â”€ Tests/            # Testes unitÃ¡rios
-â””â”€â”€ README.md
+```text
+C:\Aliari\DesafioNegociacao\
+├── bin/                       # Binários e executáveis compilados (Win32/Release/Debug)
+├── data/                      # Arquivos físicos do banco de dados Firebird
+│   ├── database/              # Arquivo .FDB ativo
+│   └── backups/               # Backups de segurança
+├── docs/                      # Documentação e modelagem do desafio
+│   ├── database/              # Scripts SQL estruturais e cargas iniciais
+│   ├── diagramas/             # Diagramas arquiteturais
+│   └── ESTRUTURA_PROJETO.md
+├── src/                       # Código fonte do ecossistema Delphi
+│   ├── App/                   # Camada de Apresentação (Formulários VCL)
+│   ├── Core/                  # Camada de Domínio (Entidades e Enumerações)
+│   ├── Infra/                 # Camada de Infraestrutura e Conexões
+│   ├── Resources/             # Recursos visuais e arquivos de inicialização
+│   └── Tests/                 # Cobertura de Testes Unitários automatizados
+└── README.md
 ```
 
-## Como Compilar
+## Como Compilar e Executar
 
 ### 1. Abrir o Projeto
-1. Abra o Delphi Community Edition
-2. File â†’ Open Project
-3. Selecione: `src/ControleNegociacoes.dproj`
+1. Abra o Delphi Community Edition.
+2. Vá em **File ➔ Open Project**.
+3. Selecione o arquivo principal: `src/ControleNegociacoes.dproj`.
 
-### 2. Configurar o Projeto
-1. Verifique se o caminho de saÃ­da estÃ¡ correto:
-   - Project â†’ Options â†’ Delphi Compiler â†’ Output dir
-   - Deve apontar para: `..\bin\$(Platform)\$(Config)`
-
-2. Configure o Library Path:
-   - Project â†’ Options â†’ Delphi Compiler â†’ Search path
-   - Adicione: `..\src`
+### 2. Configurar os Caminhos de Compilação
+1. Certifique-se de que o diretório de saída do binário está configurado corretamente:
+   - **Project ➔ Options ➔ Delphi Compiler ➔ Output directory**
+   - O caminho deve apontar para: `..\bin\$(Platform)\$(Config)`
+2. Verifique o caminho de busca do compilador:
+   - **Project ➔ Options ➔ Delphi Compiler ➔ Search path**
+   - Deve conter a referência para: `..\src`
 
 ### 3. Compilar
-1. Build â†’ Compile (Ctrl+F9)
-2. Build â†’ Build All (Shift+F9)
+1. Limpe o cache de compilação antigo: **Project ➔ Clean [NomeDoProjeto]**
+2. Execute a reconstrução dos arquivos físicos: **Project ➔ Build [NomeDoProjeto]** (Atalho: `Shift + F9`)
 
 ### 4. Executar
-1. Run â†’ Run (F9)
-2. O executÃ¡vel serÃ¡ gerado em: `bin\Win32\Debug\ControleNegociacoes.exe`
+1. Pressione `F9` (**Run ➔ Run**).
+2. O executável final otimizado será gerado fisicamente em: `bin\Win32\Debug\ControleNegociacoes.exe`
 
-## ConfiguraÃ§Ã£o do Banco de Dados
+## Configuração Ativa de Infraestrutura
 
-### Caminho do Banco
-O arquivo de configuraÃ§Ã£o estÃ¡ em: `src/Infra/CrossCutting/Configuration/DatabaseConfig.pas`
+### String de Conexão com o Banco de Dados
+A configuração dinâmica de conexão reside em `src/Infra/CrossCutting/Configuration/DatabaseConfig.pas` mapeada para o diretório atual do projeto:
 
 ```pascal
 constructor TDatabaseConfig.Create;
 begin
   inherited;
   FServer := 'localhost';
-  FDatabase := 'C:\Aliari\Desafio TÃ©cnico\data\database\NEGOCIACOES.FDB';
+  FDatabase := '..\..\..\data\database\NEGOCIACOES.FDB';
   FUserName := 'SYSDBA';
   FPassword := 'masterkey';
 end;
 ```
+## Regras de Negócio Implementadas
 
-### Recriar o Banco de Dados (se necessÃ¡rio)
-1. Abra o prompt de comando
-2. Navegue atÃ©: `C:\Program Files (x86)\Firebird\Firebird_2_1\bin`
-3. Execute:
-   ```
-   isql -u sysdba -p masterkey -i "C:\Aliari\Desafio TÃ©cnico\docs\database\01_CriacaoBanco.sql"
-   isql -u sysdba -p masterkey -i "C:\Aliari\Desafio TÃ©cnico\docs\database\02_CriacaoTabelas.sql"
-   isql -u sysdba -p masterkey -i "C:\Aliari\Desafio TÃ©cnico\docs\database\03_InsertsIniciais.sql"
-   ```
+### Validação de Crédito Inteligente
+- O produtor deve possuir limite de crédito em reais suficiente com o distribuidor para prosseguir com negociações.
+- **Regra do Saldo Aprovado:** Conforme as diretrizes do desafio, apenas negociações com o status **"Aprovada"** consomem o limite do produtor. Negociações em estado **"Pendente"** (simulações/rascunhos) podem ser geradas e salvas livremente acima do limite; a trava atua estritamente no gatilho de mudança de status para a aprovação. Negociações **"Concluídas"** ou **"Canceladas"** liberam o saldo livre imediatamente no banco de dados.
 
-## Funcionalidades Implementadas
+### Manutenção e Consistência de Limites
+- Adicionadas travas de segurança na camada de serviço do produtor para impedir que falhas operacionais reduzam ou excluam limites de crédito com distribuidores se o produtor já possuir saldo ativamente utilizado por contratos aprovados na safra atual.
 
-### Camada de DomÃ­nio (Core/)
-- **Entidades**: Produtor, Distribuidor, Produto, Negociacao, ItemNegociacao, LimiteCredito
-- **ValidaÃ§Ãµes**: ValidaÃ§Ã£o de campos e regras de negÃ³cio
-- **ServiÃ§os**: ValidacaoCreditoService, NegociacaoService
+### Status Matemáticos da Negociação
+A entidade possui um fluxo de máquina de estados baseado em 4 status restritivos (`TTipoStatus`):
+- **tsPendente**: Estado inicial automático de rascunho.
+- **tsAprovada**: Ativado após o sucesso da validação de limite.
+- **tsConcluida**: Contrato finalizado comercialmente.
+- **tsCancelada**: Operação abortada, estornando o crédito.
 
-### Camada de Infraestrutura (Infra/)
-- **Acesso a Dados**: RepositÃ³rios com IBX (InterBase Express)
-- **ConfiguraÃ§Ã£o**: DatabaseConfig, AppConfig
-- **ValidaÃ§Ã£o**: CPFValidator, CNPJValidator
-- **Utils**: DateUtils, CurrencyUtils, StringUtils
+## Testes Unitários Automatizados (DUnitX)
+O projeto conta com uma cobertura robusta de testes automatizados via framework nativo **DUnitX**, garantindo a estabilidade e a integridade de todas as camadas de negócio.
 
-### Camada de ApresentaÃ§Ã£o (App/)
-- **ViewPrincipal**: FormulÃ¡rio principal com menu
-- **ViewCadastroProdutor**: Cadastro de produtores
-- **ViewManutencaoNegociacao**: ManutenÃ§Ã£o de negociaÃ§Ãµes
-- **ViewAlteracaoStatusNegociacao**: AlteraÃ§Ã£o de status
-- **ViewConsultaNegociacoes**: Consulta e relatÃ³rios
+### Executando os Testes
+1. Abra o grupo de projetos de testes: `src/Tests/ControleNegociacoesTests.dproj`
+2. Compile em modo Release ou Debug executando o comando **Build** (`Shift + F9`).
+3. Execute o console de testes (`F9`). Os testes cobrem:
+   - Validação estrita de documentos (CPF e CNPJ reais).
+   - Bloqueio de inserções inválidas (Nomes vazios e preços nulos).
+   - Simulação matemática e lógica de consumo e liberação do saldo de crédito aprovado.
 
-## Regras de NegÃ³cio
+## Padrões de Projeto e Práticas Aplicadas (Arquitetura)
 
-### ValidaÃ§Ã£o de CrÃ©dito
-- O produtor deve ter limite de crÃ©dito suficiente com o distribuidor
-- O sistema considera negociaÃ§Ãµes aprovadas no cÃ¡lculo do crÃ©dito utilizado
-- Exemplo: Limite R$ 60.000,00 + Aprovada R$ 20.000,00 = DisponÃ­vel R$ 40.000,00
+### Princípios SOLID
+- **Single Responsibility Principle (SRP):** Classes de serviço focadas puramente em orquestrar regras, isoladas dos repositórios físicos de acesso a dados.
+- **Interface Segregation Principle (ISP):** Acoplamento focado em contratos abstratos, eliminando dependências rígidas entre objetos.
+- **Dependency Inversion Principle (DIP):** Inversão de controle total realizada através de injeção de dependências no construtor das classes.
 
-### Status de NegociaÃ§Ã£o
-- **Pendente**: Status inicial
-- **Aprovada**: ApÃ³s validaÃ§Ã£o de crÃ©dito
-- **ConcluÃ­da**: NegociaÃ§Ã£o finalizada
-- **Cancelada**: NegociaÃ§Ã£o cancelada
+### Design Patterns (GoF e Corporativos)
+- **Repository Pattern:** Abstração completa da camada de persistência física SQL via IBX.
+- **Service Layer Pattern:** Encapsulamento centralizado dos fluxos operacionais de negócio e validações.
+- **Fail-Fast Approach:** Validações de integridade realizadas no menor tempo de execução da CPU (atribuição via métodos `Set`).
 
-## PadrÃµes Utilizados
-
-### SOLID
-- **Single Responsibility**: Cada classe tem uma Ãºnica responsabilidade
-- **Open/Closed**: Aberto para extensÃ£o, fechado para modificaÃ§Ã£o
-- **Liskov Substitution**: Subtipos sÃ£o substituÃ­veis
-- **Interface Segregation**: Interfaces especÃ­ficas
-- **Dependency Inversion**: Depender de abstraÃ§Ãµes
-
-### GoF
-- **Repository Pattern**: Acesso a dados
-- **Service Layer**: LÃ³gica de negÃ³cio
-- **DTO Pattern**: TransferÃªncia de dados
-- **Factory Pattern**: CriaÃ§Ã£o de objetos
-- **Dependency Injection**: InversÃ£o de controle
-
-## PrÃ³ximos Passos
-
-### ImplementaÃ§Ãµes Pendentes
-1. Completar implementaÃ§Ãµes dos repositÃ³rios (Distribuidor, Produto, Negociacao, ItemNegociacao)
-2. Implementar LimiteCreditoRepository
-3. Completar a lÃ³gica do IoC Container
-4. Implementar testes unitÃ¡rios
-5. Completar a integraÃ§Ã£o das views com os serviÃ§os
-6. Implementar geraÃ§Ã£o de relatÃ³rios
-
-### Componentes Personalizados
-1. EditCPF - MÃ¡scara para CPF
-2. EditCNPJ - MÃ¡scara para CNPJ
-3. EditMoeda - FormataÃ§Ã£o monetÃ¡ria
-4. GridNegociacao - Grid personalizado para negociaÃ§Ãµes
-
-## Troubleshooting
-
-### Erro de ConexÃ£o com Banco de Dados
-1. Verifique se o serviÃ§o Firebird estÃ¡ rodando
-2. Verifique o caminho do banco em DatabaseConfig.pas
-3. Verifique usuÃ¡rio e senha (SYSDBA/masterkey)
-
-### Erro de CompilaÃ§Ã£o
-1. Verifique se o IBX estÃ¡ instalado
-2. Verifique os Library Paths
-3. Limpe o cache: Build â†’ Clean
-
-### Erro de Componentes
-1. Verifique se os componentes IBX estÃ£o disponÃ­veis na paleta
-2. Adicione IBX ao projeto se necessÃ¡rio
-
-## Contato
-Desafio TÃ©cnico - Aliare
-
-## LicenÃ§a
-Este projeto foi desenvolvido como parte do processo seletivo da Aliare.
+## Contato e Desenvolvimento
+Desenvolvido com excelência técnica como solução para o desafio de engenharia de software da **Aliare**.
