@@ -1,367 +1,192 @@
 # Estrutura do Projeto - Sistema de Controle de Negociações
 
 ## Visão Geral
-Este documento define a estrutura de diretórios e arquivos do projeto, seguindo princípios SOLID, Clean Code e melhores práticas de desenvolvimento Delphi.
+Este documento descreve a estrutura REAL do projeto conforme o código-fonte enviado.
 
 ## Estrutura de Diretórios
 
 ```
-Desafio Técnico/
-├── bin/                          # Binários compilados
-│   ├── Win32/                    # Binários 32-bit
-│   │   └── Debug/
-│   │   └── Release/
-│   └── Win64/                    # Binários 64-bit
-│       └── Debug/
-│       └── Release/
-│
-├── data/                         # Arquivos de banco de dados
-│   ├── database/                 # Arquivos .fdb do Firebird
+├── data
+│   ├── backups
+│   │   └── NEGOCIACOES.fbk
+│   ├── database
 │   │   └── NEGOCIACOES.FDB
-│   └── backups/                  # Backups do banco de dados
-│
-├── docs/                         # Documentação do projeto
-│   ├── database/                 # Scripts de banco de dados
-│   │   ├── 01_CriacaoTabelas.sql
-│   │   ├── 02_InsertsIniciais.sql
-│   │   ├── 03_StoredProcedures.sql
-│   │   └── 04_Triggers.sql
-│   ├── diagramas/                # Diagramas do sistema
-│   │   ├── DER.png
-│   │   └── FluxoNegociacao.png
-│   ├── manuais/                  # Manuais do usuário
-│   │   └── ManualUsuario.pdf
-│   └── especificacoes/           # Especificações técnicas
-│       └── Requisitos.md
-│
-├── src/                          # Código fonte
-│   ├── ControleNegociacoes.dpr   # Arquivo principal do projeto
-│   ├── ControleNegociacoes.dproj # Arquivo de projeto Delphi
-│   │
-│   ├── App/                      # Camada de Apresentação (VCL/FMX)
-│   │   ├── Views/                # Formulários/Views
-│   │   │   ├── Principal/
-│   │   │   │   └── ViewPrincipal.pas
-│   │   │   │   └── ViewPrincipal.dfm
-│   │   │   ├── Produtor/
-│   │   │   │   ├── ViewCadastroProdutor.pas
-│   │   │   │   ├── ViewCadastroProdutor.dfm
-│   │   │   │   └── ViewListaProdutores.pas
-│   │   │   │   └── ViewListaProdutores.dfm
-│   │   │   ├── Distribuidor/
-│   │   │   │   ├── ViewCadastroDistribuidor.pas
-│   │   │   │   ├── ViewCadastroDistribuidor.dfm
-│   │   │   │   └── ViewListaDistribuidores.pas
-│   │   │   │   └── ViewListaDistribuidores.dfm
-│   │   │   ├── Produto/
-│   │   │   │   ├── ViewCadastroProduto.pas
-│   │   │   │   ├── ViewCadastroProduto.dfm
-│   │   │   │   └── ViewListaProdutos.pas
-│   │   │   │   └── ViewListaProdutos.dfm
-│   │   │   ├── Negociacao/
-│   │   │   │   ├── ViewManutencaoNegociacao.pas
-│   │   │   │   ├── ViewManutencaoNegociacao.dfm
-│   │   │   │   ├── ViewConsultaNegociacoes.pas
-│   │   │   │   ├── ViewConsultaNegociacoes.dfm
-│   │   │   │   ├── ViewAlteracaoStatusNegociacao.pas
-│   │   │   │   └── ViewAlteracaoStatusNegociacao.dfm
-│   │   │   └── Relatorio/
-│   │   │       ├── ViewPreviewRelatorio.pas
-│   │   │       └── ViewPreviewRelatorio.dfm
-│   │   │
-│   │   ├── Components/            # Componentes personalizados
-│   │   │   ├── EditCPF.pas
-│   │   │   ├── EditCNPJ.pas
-│   │   │   ├── EditMoeda.pas
-│   │   │   └── GridNegociacao.pas
-│   │   │
-│   │   ├── Dialogs/               # Diálogos personalizados
-│   │   │   ├── DialogConfirmacao.pas
-│   │   │   └── DialogSelecao.pas
-│   │   │
-│   │   └── Helpers/              # Helpers da camada de view
-│   │       └── ViewHelper.pas
-│   │
-│   ├── Core/                     # Camada de Domínio (Business Logic)
-│   │   ├── Entities/             # Entidades do domínio
-│   │   │   ├── Produtor.pas
-│   │   │   ├── Distribuidor.pas
-│   │   │   ├── Produto.pas
-│   │   │   ├── Negociacao.pas
-│   │   │   ├── ItemNegociacao.pas
-│   │   │   ├── LimiteCredito.pas
-│   │   │   └── StatusNegociacao.pas
-│   │   │
-│   │   ├── Services/             # Serviços de domínio
-│   │   │   ├── Interfaces/
-│   │   │   │   ├── IProdutorService.pas
-│   │   │   │   ├── IDistribuidorService.pas
-│   │   │   │   ├── IProdutoService.pas
-│   │   │   │   ├── INegociacaoService.pas
-│   │   │   │   ├── IRelatorioService.pas
-│   │   │   │   └── IValidacaoCreditoService.pas
-│   │   │   │
-│   │   │   ├── Impl/             # Implementações dos serviços
-│   │   │   │   ├── ProdutorService.pas
-│   │   │   │   ├── DistribuidorService.pas
-│   │   │   │   ├── ProdutoService.pas
-│   │   │   │   ├── NegociacaoService.pas
-│   │   │   │   ├── RelatorioService.pas
-│   │   │   │   └── ValidacaoCreditoService.pas
-│   │   │   │
-│   │   │   └── DTOs/             # Data Transfer Objects
-│   │   │       ├── ProdutorDTO.pas
-│   │   │       ├── DistribuidorDTO.pas
-│   │   │       ├── ProdutoDTO.pas
-│   │   │       ├── NegociacaoDTO.pas
-│   │   │       ├── ItemNegociacaoDTO.pas
-│   │   │       └── RelatorioNegociacaoDTO.pas
-│   │   │
-│   │   ├── Validators/           # Validadores de domínio
-│   │   │   ├── ProdutorValidator.pas
-│   │   │   ├── DistribuidorValidator.pas
-│   │   │   ├── ProdutoValidator.pas
-│   │   │   ├── NegociacaoValidator.pas
-│   │   │   └── CreditoValidator.pas
-│   │   │
-│   │   ├── Exceptions/           # Exceções de domínio
-│   │   │   ├── CreditoExcedidoException.pas
-│   │   │   ├── NegociacaoNaoEncontradaException.pas
-│   │   │   └── ValidacaoException.pas
-│   │   │
-│   │   └── Enums/                # Enumerações
-│   │       └── TipoStatus.pas
-│   │
-│   ├── Infra/                    # Camada de Infraestrutura
-│   │   ├── Data/                 # Acesso a dados
-│   │   │   ├── Interfaces/
-│   │   │   │   ├── IConnectionFactory.pas
-│   │   │   │   ├── IProdutorRepository.pas
-│   │   │   │   ├── IDistribuidorRepository.pas
-│   │   │   │   ├── IProdutoRepository.pas
-│   │   │   │   ├── INegociacaoRepository.pas
-│   │   │   │   └── IItemNegociacaoRepository.pas
-│   │   │   │
-│   │   │   ├── Firebird/         # Implementação Firebird
-│   │   │   │   ├── FirebirdConnectionFactory.pas
-│   │   │   │   ├── ProdutorRepositoryFB.pas
-│   │   │   │   ├── DistribuidorRepositoryFB.pas
-│   │   │   │   ├── ProdutoRepositoryFB.pas
-│   │   │   │   ├── NegociacaoRepositoryFB.pas
-│   │   │   │   └── ItemNegociacaoRepositoryFB.pas
-│   │   │   │
-│   │   │   └── Models/           # Models de banco de dados
-│   │   │       ├── ProdutorModel.pas
-│   │   │       ├── DistribuidorModel.pas
-│   │   │       ├── ProdutoModel.pas
-│   │   │       ├── NegociacaoModel.pas
-│   │   │       └── ItemNegociacaoModel.pas
-│   │   │
-│   │   ├── ORM/                  # Mapeamento ORM (se necessário)
-│   │   │   ├── Interfaces/
-│   │   │   │   └── IMapper.pas
-│   │   │   └── Mappers/
-│   │   │       ├── ProdutorMapper.pas
-│   │   │       ├── DistribuidorMapper.pas
-│   │   │       ├── ProdutoMapper.pas
-│   │   │       └── NegociacaoMapper.pas
-│   │   │
-│   │   ├── CrossCutting/         # Concerns transversais
-│   │   │   ├── Logging/
-│   │   │   │   ├── Interfaces/
-│   │   │   │   │   └── ILogger.pas
-│   │   │   │   └── Impl/
-│   │   │   │       └── FileLogger.pas
-│   │   │   │
-│   │   │   ├── Configuration/
-│   │   │   │   ├── AppConfig.pas
-│   │   │   │   └── DatabaseConfig.pas
-│   │   │   │
-│   │   │   ├── Validation/
-│   │   │   │   ├── CPFValidator.pas
-│   │   │   │   └── CNPJValidator.pas
-│   │   │   │
-│   │   │   └── Utils/
-│   │   │       ├── DateUtils.pas
-│   │   │       ├── CurrencyUtils.pas
-│   │   │       └── StringUtils.pas
-│   │   │
-│   │   └── IoC/                  # Inversão de Controle
-│   │       ├── Container.pas
-│   │       └── ServiceLocator.pas
-│   │
-│   ├── Resources/                # Recursos da aplicação
-│   │   ├── Images/               # Imagens e ícones
-│   │   │   ├── Icons/
-│   │   │   └── Logos/
-│   │   └── Reports/              # Templates de relatórios
-│   │       └── RelatorioNegociacoes.rav
-│   │
-│   └── Tests/                    # Testes unitários
-│       ├── Core/
-│       │   ├── Services/
-│       │   │   ├── NegociacaoServiceTest.pas
-│       │   │   └── ValidacaoCreditoServiceTest.pas
-│       │   └── Validators/
-│       │       └── CreditoValidatorTest.pas
-│       └── Infra/
-│           └── Validation/
-│               ├── CPFValidatorTest.pas
-│               └── CNPJValidatorTest.pas
-│
-├── lib/                          # Bibliotecas externas (se necessário)
-│   └── Firebird/
-│
-└── README.md                     # Documentação do projeto
+│   └── query.sql
+├── docs
+│   ├── database
+│   │   ├── 01_CriacaoBanco.sql
+│   │   ├── 02_CriacaoTabelas.sql
+│   │   ├── 02_CriacaoTabelas_alternativo.sql
+│   │   ├── 03_InsertsIniciais.sql
+│   │   ├── criar_banco.bat
+│   │   └── criar_banco_manual.sql
+│   └── ESTRUTURA_PROJETO.md
+├── src
+│   ├── App
+│   │   └── Views
+│   │       ├── Base
+│   │       │   ├── App.Views.Base.ViewBaseCadastro.dfm
+│   │       │   ├── App.Views.Base.ViewBaseCadastro.pas
+│   │       │   ├── App.Views.Base.ViewBaseCadastroDetail.dfm
+│   │       │   └── App.Views.Base.ViewBaseCadastroDetail.pas
+│   │       ├── Distribuidor
+│   │       │   ├── App.Views.Distribuidor.ViewCadastroDistribuidor.dfm
+│   │       │   ├── App.Views.Distribuidor.ViewCadastroDistribuidor.pas
+│   │       │   ├── App.Views.Distribuidor.ViewCadastroDistribuidorDetail.dfm
+│   │       │   └── App.Views.Distribuidor.ViewCadastroDistribuidorDetail.pas
+│   │       ├── Negociacao
+│   │       │   ├── App.Views.Negociacao.ViewAlteracaoStatusNegociacao.dfm
+│   │       │   ├── App.Views.Negociacao.ViewAlteracaoStatusNegociacao.pas
+│   │       │   ├── App.Views.Negociacao.ViewConsultaNegociacoes.dfm
+│   │       │   ├── App.Views.Negociacao.ViewConsultaNegociacoes.pas
+│   │       │   ├── App.Views.Negociacao.ViewManutencaoNegociacao.dfm
+│   │       │   └── App.Views.Negociacao.ViewManutencaoNegociacao.pas
+│   │       ├── Principal
+│   │       │   ├── App.Views.Principal.ViewPrincipal.dfm
+│   │       │   └── App.Views.Principal.ViewPrincipal.pas
+│   │       ├── Produto
+│   │       │   ├── App.Views.Produto.ViewCadastroProduto.dfm
+│   │       │   └── App.Views.Produto.ViewCadastroProduto.pas
+│   │       └── Produtor
+│   │           ├── App.Views.Produtor.ViewCadastroProdutor.dfm
+│   │           ├── App.Views.Produtor.ViewCadastroProdutor.pas
+│   │           ├── App.Views.Produtor.ViewCadastroProdutorDetail.dfm
+│   │           └── App.Views.Produtor.ViewCadastroProdutorDetail.pas
+│   ├── Core
+│   │   ├── Entities
+│   │   │   ├── Core.Entities.CadastroBase.pas
+│   │   │   ├── Core.Entities.Distribuidor.pas
+│   │   │   ├── Core.Entities.ItemNegociacao.pas
+│   │   │   ├── Core.Entities.Negociacao.pas
+│   │   │   ├── Core.Entities.NegociacaoItem.pas
+│   │   │   ├── Core.Entities.Produto.pas
+│   │   │   ├── Core.Entities.Produtor.pas
+│   │   │   ├── Core.Entities.ProdutorLimiteCredito.pas
+│   │   │   └── Core.Entities.StatusNegociacao.pas
+│   │   ├── Enums
+│   │   │   └── Core.Enums.TipoStatus.pas
+│   │   ├── Exceptions
+│   │   │   ├── Core.Exceptions.CreditoExcedidoException.pas
+│   │   │   ├── Core.Exceptions.NegociacaoNaoEncontradaException.pas
+│   │   │   └── Core.Exceptions.ValidacaoException.pas
+│   │   └── Services
+│   │       ├── Impl
+│   │       │   ├── Core.Services.Impl.DistribuidorService.pas
+│   │       │   ├── Core.Services.Impl.NegociacaoService.pas
+│   │       │   ├── Core.Services.Impl.ProdutorService.pas
+│   │       │   ├── Core.Services.Impl.ProdutoService.pas
+│   │       │   ├── Core.Services.Impl.RelatorioService.pas
+│   │       │   └── Core.Services.Impl.ValidacaoCreditoService.pas
+│   │       └── Interfaces
+│   │           ├── Core.Services.Interfaces.IDistribuidorService.pas
+│   │           ├── Core.Services.Interfaces.INegociacaoService.pas
+│   │           ├── Core.Services.Interfaces.IProdutorService.pas
+│   │           ├── Core.Services.Interfaces.IProdutoService.pas
+│   │           ├── Core.Services.Interfaces.IRelatorioService.pas
+│   │           └── Core.Services.Interfaces.IValidacaoCreditoService.pas
+│   ├── Infra
+│   │   ├── CrossCutting
+│   │   │   ├── Configuration
+│   │   │   │   ├── Infra.CrossCutting.Configuration.AppConfig.pas
+│   │   │   │   └── Infra.CrossCutting.Configuration.DatabaseConfig.pas
+│   │   │   ├── Utils
+│   │   │   │   ├── Infra.CrossCutting.Utils.CurrencyUtils.pas
+│   │   │   │   ├── Infra.CrossCutting.Utils.DateUtils.pas
+│   │   │   │   └── Infra.CrossCutting.Utils.StringUtils.pas
+│   │   │   └── Validation
+│   │   │       ├── Infra.CrossCutting.Validation.CNPJValidator.pas
+│   │   │       ├── Infra.CrossCutting.Validation.CPFValidator.pas
+│   │   │       └── Infra.CrossCutting.Validation.MessageValidation.pas
+│   │   ├── Data
+│   │   │   ├── Firebird
+│   │   │   │   ├── Infra.Data.Firebird.DistribuidorProdutoRepositoryFB.pas
+│   │   │   │   ├── Infra.Data.Firebird.DistribuidorRepositoryFB.pas
+│   │   │   │   ├── Infra.Data.Firebird.FirebirdConnectionFactory.pas
+│   │   │   │   ├── Infra.Data.Firebird.ItemNegociacaoRepositoryFB.pas
+│   │   │   │   ├── Infra.Data.Firebird.NegociacaoItemRepositoryFB.pas
+│   │   │   │   ├── Infra.Data.Firebird.NegociacaoRepositoryFB.pas
+│   │   │   │   ├── Infra.Data.Firebird.ProdutoRepositoryFB.pas
+│   │   │   │   ├── Infra.Data.Firebird.ProdutorLimiteCreditoRepositoryFB.pas
+│   │   │   │   └── Infra.Data.Firebird.ProdutorRepositoryFB.pas
+│   │   │   └── Interfaces
+│   │   │       ├── Infra.Data.Interfaces.IConnectionFactory.pas
+│   │   │       ├── Infra.Data.Interfaces.IDistribuidorProdutoRepository.pas
+│   │   │       ├── Infra.Data.Interfaces.IDistribuidorRepository.pas
+│   │   │       ├── Infra.Data.Interfaces.IItemNegociacaoRepository.pas
+│   │   │       ├── Infra.Data.Interfaces.INegociacaoItemRepository.pas
+│   │   │       ├── Infra.Data.Interfaces.INegociacaoRepository.pas
+│   │   │       ├── Infra.Data.Interfaces.IProdutoRepository.pas
+│   │   │       ├── Infra.Data.Interfaces.IProdutorLimiteCreditoRepository.pas
+│   │   │       └── Infra.Data.Interfaces.IProdutorRepository.pas
+│   │   └── IoC
+│   │       ├── Infra.IoC.Container.pas
+│   │       └── Infra.IoC.ServiceLocator.pas
+│   ├── Resources
+│   │   └── Images
+│   │       └── Icons
+│   │           ├── adicionar.bmp
+│   │           ├── Aliari.ico
+│   │           ├── Aliari2.ico
+│   │           ├── botao-de-menos.bmp
+│   │           ├── cancelar.bmp
+│   │           ├── excluir (1).bmp
+│   │           ├── excluir.bmp
+│   │           ├── Inserir.bmp
+│   │           ├── mais.bmp
+│   │           └── sinal-de-menos.bmp
+│   ├── Tests
+│   │   ├── Core
+│   │   │   ├── Core.Services.DistribuidorServiceTest.pas
+│   │   │   ├── Core.Services.NegociacaoServiceTest.pas
+│   │   │   ├── Core.Services.ProdutorServiceTest.pas
+│   │   │   ├── Core.Services.ProdutoServiceTest.pas
+│   │   │   ├── Core.Services.RelatorioServiceTest.pas
+│   │   │   ├── Core.Services.ValidacaoCreditoServiceTest.pas
+│   │   │   └── Core.Services.ValidacaoCreditoServiceTest.pas.bak
+│   │   ├── Win32
+│   │   │   └── Debug
+│   │   │       ├── ControleNegociacoesTests.exe
+│   │   │       ├── ControleNegociacoesTests.ini
+│   │   │       └── dunitx-results.xml
+│   │   ├── ControleNegociacoesTests.dpr
+│   │   └── ControleNegociacoesTests.dproj
+│   ├── config.ini
+│   ├── ControleNegociacoes.dpr
+│   ├── ControleNegociacoes.dproj
+│   ├── ControleNegociacoes.exe
+│   ├── DesafioNegociacao.groupproj
+│   └── fbclient.dll
+├── .gitignore
+└── README.md
 ```
 
 ## Convenções de Nomenclatura
-
-### Arquivos Pascal (.pas)
-- **Classes**: PascalCase (ex: `ProdutorService.pas`)
-- **Interfaces**: Prefixo 'I' + PascalCase (ex: `IProdutorService.pas`)
-- **DTOs**: Sufixo 'DTO' + PascalCase (ex: `ProdutorDTO.pas`)
-- **Exceptions**: Sufixo 'Exception' (ex: `CreditoExcedidoException.pas`)
-- **Validators**: Sufixo 'Validator' (ex: `CreditoValidator.pas`)
-- **Testes**: Sufixo 'Test' (ex: `NegociacaoServiceTest.pas`)
-
-### Arquivos de Formulário (.dfm)
-- Mesmo nome do arquivo .pas correspondente
-
-### Units
-- **Nome da Unit**: Deve ser igual ao nome do arquivo
-- **Uses Clause**: Organizada em seções (System, Classes, etc.)
-
-### Classes
-- **Classes**: PascalCase (ex: `TProdutorService`)
-- **Interfaces**: Prefixo 'I' + PascalCase (ex: `IProdutorService`)
-- **Campos privados**: Prefixo 'F' + PascalCase (ex: `FNome`)
-- **Propriedades**: PascalCase (ex: `Nome`)
-- **Métodos**: PascalCase (ex: `ValidarCredito`)
-- **Eventos**: Prefixo 'On' + PascalCase (ex: `OnCreditoExcedido`)
-
-### Variáveis
-- **Locais**: camelCase (ex: `valorTotal`)
-- **Globais**: Prefixo 'g' + camelCase (ex: `gConfiguracao`)
-- **Parâmetros**: Prefixo 'A' + PascalCase (ex: `AValor`)
-
-### Constantes
-- **Const**: PascalCase ou UPPER_CASE (ex: `MaximoItens` ou `MAXIMO_ITENS`)
+- Classes: PascalCase.
+- Interfaces: prefixo I.
+- Campos privados: prefixo F.
+- Parâmetros: prefixo A.
+- Units com o mesmo nome do arquivo.
 
 ## Responsabilidades das Camadas
+- App: Interface do usuário (Views).
+- Core: Regras de negócio, entidades e serviços.
+- Infra: Persistência, Firebird, IoC e infraestrutura.
+- Resources: Recursos da aplicação.
+- Tests: Testes unitários.
 
-### Camada de Apresentação (App/)
-- Responsável pela interação com o usuário
-- Formulários VCL/FMX
-- Componentes visuais personalizados
-- Não contém lógica de negócio
-
-### Camada de Domínio (Core/)
-- Contém a lógica de negócio
-- Entidades do domínio
-- Serviços de domínio
-- Regras de validação
-- Independente de infraestrutura
-
-### Camada de Infraestrutura (Infra/)
-- Acesso a dados
-- Integração com banco de dados
-- Conexão externa
-- Logging
-- Configuração
-
-### Camada de Testes (Tests/)
-- Testes unitários
-- Testes de integração
-- Testes de serviços e validadores
-
-## Padrões de Projeto Utilizados
-
-### SOLID
-- **S**ingle Responsibility: Cada classe tem uma única responsabilidade
-- **O**pen/Closed: Aberto para extensão, fechado para modificação
-- **L**iskov Substitution: Subtipos são substituíveis
-- **I**nterface Segregation: Interfaces específicas
-- **D**ependency Inversion: Depender de abstrações
-
-### GoF
-- **Repository Pattern**: Para acesso a dados
-- **Service Layer**: Para lógica de negócio
-- **DTO Pattern**: Para transferência de dados
-- **Factory Pattern**: Para criação de objetos
-- **Strategy Pattern**: Para validações
-- **Dependency Injection**: Para inversão de controle
-
-### Outros Padrões
-- **Data Mapper**: Para mapeamento objeto-relacional
-- **Unit of Work**: Para gerenciamento de transações
-- **Specification**: Para consultas complexas
-
-## Organização de Código
-
-### Estrutura de uma Unit
-```pascal
-unit NomeUnit;
-
-interface
-
-uses
-  // Uses da interface
-
-type
-  // Declarações de tipos
-
-implementation
-
-uses
-  // Uses da implementação
-
-{$R *.dfm}
-
-// Implementação
-
-end.
-```
-
-### Ordenação de Métodos
-1. Construtores/Destrutores
-2. Propriedades
-3. Métodos públicos
-4. Métodos protegidos
-5. Métodos privados
-6. Event handlers
+## Padrões Utilizados
+- SOLID
+- Repository Pattern
+- Service Layer
+- Factory
+- Dependency Injection
+- Clean Code
 
 ## Configuração de Compilação
+- Debug: otimizações desabilitadas e símbolos habilitados.
+- Release: otimizações habilitadas e símbolos desabilitados.
 
-### Debug
-- Symbols: ON
-- Optimization: OFF
-- Stack frames: ON
-- Debug information: ON
-
-### Release
-- Symbols: OFF
-- Optimization: ON
-- Stack frames: OFF
-- Debug information: OFF
-
-## Dependências Externas
-
-### Firebird 2.1
-- Driver: IBX (InterBase Express) - nativo do Delphi
-- Alternativa: FireDAC (se disponível na versão Community)
-
-### Relatórios
-- Rave Reports (nativo do Delphi)
-- FastReport (se disponível)
-
-## Próximos Passos
-
-1. Criar a estrutura de diretórios
-2. Configurar o projeto no Delphi
-3. Criar os scripts de banco de dados
-4. Implementar as entidades do domínio
-5. Implementar os repositórios
-6. Implementar os serviços
-7. Criar as views
-8. Implementar testes unitários
+## Dependências
+- Delphi
+- Firebird
+- Firedac

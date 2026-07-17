@@ -1,13 +1,13 @@
 ﻿# Sistema de Controle de Negociações - Aliare
 
 ## Descrição
-Sistema completo para controle de negociações entre produtores e distribuidores de insumos agrícolas. O projeto foi integralmente desenvolvido em Delphi Community Edition, utilizando o banco de dados Firebird 2.1 e componentização nativa VCL/IBX.
+Sistema completo para controle de negociações entre produtores e distribuidores de insumos agrícolas. O projeto foi integralmente desenvolvido em Delphi Community Edition, utilizando o banco de dados Firebird 2.1 e componentização nativa VCL/FireDAC.
 
 ## Requisitos
 ### Software Necessário
 - **Delphi Community Edition**
 - **Firebird 2.1** - [Download Oficial](http://www.firebirdsql.org/en/firebird-2-1/)
-- **IBX (InterBase Express)** - Componentes nativos de dados do Delphi
+- **FireDAC** - Componentes nativos de acesso a dados do Delphi
 
 ### Configuração do Banco de Dados
 1. Instale o Firebird 2.1 em modo super-server/arquitetura padrão.
@@ -107,7 +107,7 @@ O projeto conta com uma cobertura robusta de testes automatizados via framework 
 - **Dependency Inversion Principle (DIP):** Inversão de controle total realizada através de injeção de dependências no construtor das classes.
 
 ### Design Patterns (GoF e Corporativos)
-- **Repository Pattern:** Abstração completa da camada de persistência física SQL via IBX.
+- **Repository Pattern:** Abstração completa da camada de persistência física SQL via FireDAC.
 - **Service Layer Pattern:** Encapsulamento centralizado dos fluxos operacionais de negócio e validações.
 - **Fail-Fast Approach:** Validações de integridade realizadas no menor tempo de execução da CPU (atribuição via métodos `Set`).
 
