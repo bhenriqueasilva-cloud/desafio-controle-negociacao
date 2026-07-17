@@ -16,12 +16,20 @@ uses
 
 class function TAppConfig.GetDatabasePath: string;
 begin
-  Result := ExtractFilePath(ParamStr(0)) + '..\..\data\database\';
+  Result := IncludeTrailingPathDelimiter(
+    ExpandFileName(
+      ExtractFilePath(ParamStr(0)) + '..\data\database'
+    )
+  );
 end;
 
 class function TAppConfig.GetBackupPath: string;
 begin
-  Result := ExtractFilePath(ParamStr(0)) + '..\..\data\backups\';
+  Result := IncludeTrailingPathDelimiter(
+    ExpandFileName(
+      ExtractFilePath(ParamStr(0)) + '..\data\backups'
+    )
+  );
 end;
 
 end.

@@ -13,8 +13,11 @@ type
     FUserName: string;
     FPassword: string;
     FIniFile: string;
+
     procedure CarregarConfiguracoes;
     procedure SalvarConfiguracoes;
+    function ResolverCaminhoBanco(const ACaminho: string): string;
+    function ObterCaminhoRelativoBanco: string;
   public
     constructor Create;
     destructor Destroy; override;
@@ -36,52 +39,111 @@ const
   INI_DATABASE = 'Database';
   INI_USERNAME = 'UserName';
   INI_PASSWORD = 'Password';
+
   DEFAULT_SERVER = 'localhost';
-  DEFAULT_DATABASE = '..\..\..\data\database\NEGOCIACOES.FDB';
+  DEFAULT_DATABASE = '..\data\database\NEGOCIACOES.FDB';
   DEFAULT_USERNAME = 'SYSDBA';
   DEFAULT_PASSWORD = 'masterkey';
 
 constructor TDatabaseConfig.Create;
 begin
-  inherited;
-  FIniFile := ExtractFilePath(ParamStr(0)) + 'config.ini';
+  inherited Create;
+
+  FIniFile := IncludeTrailingPathDelimiter(
+    ExtractFilePath(ParamStr(0))
+  ) + 'config.ini';
+
   CarregarConfiguracoes;
 end;
 
 destructor TDatabaseConfig.Destroy;
 begin
   SalvarConfiguracoes;
-  inherited;
+  inherited Destroy;
+end;
+
+function TDatabaseConfig.ResolverCaminhoBanco(
+  const ACaminho: string): string;
+begin
+  if Trim(ACaminho) = '' then
+    Exit(
+      ExpandFileName(
+        ExtractFilePath(ParamStr(0)) + DEFAULT_DATABASE
+      )
+    );
+
+  if ExtractFileDrive(ACaminho) <> '' then
+    Result := ExpandFileName(ACaminho)
+  else
+    Result := ExpandFileName(
+      ExtractFilePath(ParamStr(0)) + ACaminho
+    );
+end;
+
+function TDatabaseConfig.ObterCaminhoRelativoBanco: string;
+var
+  LDiretorioExe: string;
+begin
+  LDiretorioExe := IncludeTrailingPathDelimiter(
+    ExtractFilePath(ParamStr(0))
+  );
+
+  Result := ExtractRelativePath(
+    LDiretorioExe,
+    FDatabase
+  );
+
+  if Result = '' then
+    Result := DEFAULT_DATABASE;
 end;
 
 procedure TDatabaseConfig.CarregarConfiguracoes;
 var
   LIniFile: TIniFile;
+  LCaminhoConfigurado: string;
 begin
+  FServer := DEFAULT_SERVER;
+  FDatabase := ResolverCaminhoBanco(DEFAULT_DATABASE);
+  FUserName := DEFAULT_USERNAME;
+  FPassword := DEFAULT_PASSWORD;
+
   if FileExists(FIniFile) then
   begin
     LIniFile := TIniFile.Create(FIniFile);
     try
-      FServer := LIniFile.ReadString(INI_SECTION, INI_SERVER, DEFAULT_SERVER);
-      FDatabase := LIniFile.ReadString(INI_SECTION, INI_DATABASE, DEFAULT_DATABASE);
-      if ExtractFileDrive(FDatabase) = '' then
-        FDatabase := ExpandFileName(ExtractFilePath(ParamStr(0)) + FDatabase);
-      FUserName := LIniFile.ReadString(INI_SECTION, INI_USERNAME, DEFAULT_USERNAME);
-      FPassword := LIniFile.ReadString(INI_SECTION, INI_PASSWORD, DEFAULT_PASSWORD);
+      FServer := LIniFile.ReadString(
+        INI_SECTION,
+        INI_SERVER,
+        DEFAULT_SERVER
+      );
+
+      LCaminhoConfigurado := LIniFile.ReadString(
+        INI_SECTION,
+        INI_DATABASE,
+        DEFAULT_DATABASE
+      );
+
+      FDatabase := ResolverCaminhoBanco(
+        LCaminhoConfigurado
+      );
+
+      FUserName := LIniFile.ReadString(
+        INI_SECTION,
+        INI_USERNAME,
+        DEFAULT_USERNAME
+      );
+
+      FPassword := LIniFile.ReadString(
+        INI_SECTION,
+        INI_PASSWORD,
+        DEFAULT_PASSWORD
+      );
     finally
       LIniFile.Free;
     end;
   end
   else
-  begin
-
-    FServer := DEFAULT_SERVER;
-    FDatabase := ExpandFileName(ExtractFilePath(ParamStr(0)) + DEFAULT_DATABASE);
-    FUserName := DEFAULT_USERNAME;
-    FPassword := DEFAULT_PASSWORD;
-
     SalvarConfiguracoes;
-  end;
 end;
 
 procedure TDatabaseConfig.SalvarConfiguracoes;
@@ -90,10 +152,29 @@ var
 begin
   LIniFile := TIniFile.Create(FIniFile);
   try
-    LIniFile.WriteString(INI_SECTION, INI_SERVER, FServer);
-    LIniFile.WriteString(INI_SECTION, INI_DATABASE, FDatabase);
-    LIniFile.WriteString(INI_SECTION, INI_USERNAME, FUserName);
-    LIniFile.WriteString(INI_SECTION, INI_PASSWORD, FPassword);
+    LIniFile.WriteString(
+      INI_SECTION,
+      INI_SERVER,
+      FServer
+    );
+
+    LIniFile.WriteString(
+      INI_SECTION,
+      INI_DATABASE,
+      ObterCaminhoRelativoBanco
+    );
+
+    LIniFile.WriteString(
+      INI_SECTION,
+      INI_USERNAME,
+      FUserName
+    );
+
+    LIniFile.WriteString(
+      INI_SECTION,
+      INI_PASSWORD,
+      FPassword
+    );
   finally
     LIniFile.Free;
   end;
