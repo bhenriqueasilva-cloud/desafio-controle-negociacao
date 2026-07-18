@@ -67,7 +67,7 @@ constructor TDatabaseConfig.Create;
 begin
   inherited;
   FServer := 'localhost';
-  FDatabase := '..\..\..\data\database\NEGOCIACOES.FDB';
+  FDatabase := '..\data\database\NEGOCIACOES.FDB';
   FUserName := 'SYSDBA';
   FPassword := 'masterkey';
 end;
