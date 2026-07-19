@@ -24,6 +24,7 @@ type
     function ObterPorId(AId: Integer; out AValorProduto: Currency): Integer;
     function ObterPorDistribuidorProdutor(AIdDistribuidor, AIdProduto: Integer; out AValorProduto: Currency): Integer;
     function ObterTodosPorDistribuidor(AIdDistribuidor: Integer): TList<TRecordDistribuidorProduto>;
+    function PossuiProdutos(AIdDistribuidor: Integer): Boolean;
   end;
 
 implementation
@@ -234,6 +235,37 @@ begin
     except
       LConnection.Rollback;
       Result.Free;
+      raise;
+    end;
+  finally
+    LQuery.Free;
+  end;
+end;
+
+function TDistribuidorProdutoRepositoryFB.PossuiProdutos(AIdDistribuidor: Integer): Boolean;
+var
+  LQuery: TFDQuery;
+  LConnection: TFDConnection;
+begin
+  Result := False;
+  LConnection := TFDConnection(FConnectionFactory.GetConnection);
+
+  LQuery := TFDQuery.Create(nil);
+  try
+    LQuery.Connection := LConnection;
+    LConnection.StartTransaction;
+
+    try
+      LQuery.SQL.Text := 'SELECT COUNT(*) AS TOTAL FROM DISTRIBUIDOR_PRODUTO WHERE ID_DISTRIBUIDOR = :ID_DISTRIBUIDOR';
+      LQuery.ParamByName('ID_DISTRIBUIDOR').AsInteger := AIdDistribuidor;
+      LQuery.Open;
+
+      if not LQuery.Eof then
+        Result := LQuery.FieldByName('TOTAL').AsInteger > 0;
+
+      LConnection.Commit;
+    except
+      LConnection.Rollback;
       raise;
     end;
   finally

@@ -392,9 +392,18 @@ end;
 procedure TViewCadastroDistribuidorDetail.DoDeletar;
 var
   LMemTable: TFDMemTable;
+  LIdDistribuidor: Integer;
 begin
   LMemTable := TFDMemTable(FDataSource.DataSet);
-  TIoCContainer.DistribuidorService.Excluir(LMemTable.FieldByName('ID').AsInteger);
+  LIdDistribuidor := LMemTable.FieldByName('ID').AsInteger;
+
+  if TIoCContainer.DistribuidorService.PossuiProdutos(LIdDistribuidor) then
+  begin
+    TMessageValidation.Aviso('Não é possível excluir o distribuidor pois existem produtos cadastrados para este distribuidor.');
+    Exit;
+  end;
+
+  TIoCContainer.DistribuidorService.Excluir(LIdDistribuidor);
   LMemTable.Delete;
 end;
 
@@ -484,3 +493,4 @@ begin
 end;
 
 end.
+

@@ -21,6 +21,7 @@ type
     function ObterPorId(AId: Integer; out AValorProduto: Currency): Integer;
     function ObterPorDistribuidorProdutor(AIdDistribuidor, AIdProduto: Integer; out AValorProduto: Currency): Integer;
     function ObterTodosPorDistribuidor(AIdDistribuidor: Integer): TList<TRecordDistribuidorProduto>;
+    function PossuiProdutos(AIdDistribuidor: Integer): Boolean;
   end;
 
 implementation

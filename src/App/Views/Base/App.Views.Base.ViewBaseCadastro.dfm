@@ -133,7 +133,7 @@ object ViewBaseCadastro: TViewBaseCadastro
     Height = 35
     Align = alTop
     BevelOuter = bvLowered
-    Color = clNavy
+    Color = 12615808
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWhite
     Font.Height = -16
@@ -142,12 +142,12 @@ object ViewBaseCadastro: TViewBaseCadastro
     ParentBackground = False
     ParentFont = False
     TabOrder = 2
+    ExplicitTop = -6
     object lblTitulo: TLabel
       Left = 16
       Top = 7
-      Width = 117
+      Width = 5
       Height = 19
-      Caption = 'Cadastro Base'
     end
   end
 end

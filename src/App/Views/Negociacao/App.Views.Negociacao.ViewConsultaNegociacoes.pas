@@ -82,7 +82,6 @@ end;
 
 procedure TViewConsultaNegociacoes.FormCreate(Sender: TObject);
 begin
-  Caption := 'Consulta de Negociações';
   lblTitulo.Caption := 'Consulta de Negociações';
 
   FProdutores := TList<TProdutor>.Create;

@@ -21,6 +21,7 @@ type
     function SalvarProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer; AValorLimite: Currency): Boolean;
     function AtualizarProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer; AValorLimite: Currency): Boolean;
     function ExcluirProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer): Boolean;
+    function PossuiDistribuidores(AIdProdutor: Integer): Boolean;
   end;
 
 implementation

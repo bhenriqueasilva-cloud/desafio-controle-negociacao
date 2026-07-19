@@ -3,7 +3,7 @@
 -- Firebird 2.1
 -- Ajustado conforme as entidades, interfaces e repositórios do projeto
 
-CONNECT 'C:\Aliari\DesafioNegociacao\data\database\NEGOCIACOES.FDB'
+CONNECT 'data\database\NEGOCIACOES.FDB'
 USER 'SYSDBA' PASSWORD 'masterkey';
 
 /* ============================================================

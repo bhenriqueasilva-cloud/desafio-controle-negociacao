@@ -43,6 +43,7 @@ type
     function ObterPorId(AId: Integer): Currency;
     function ObterLimite(AIdProdutor, AIdDistribuidor: Integer; out AValorLimite: Currency): Integer;
     function ObterTodosPorProdutor(AIdProdutor: Integer): TList<TPair<Integer, Currency>>;
+    function PossuiDistribuidores(AIdProdutor: Integer): Boolean;
   end;
 
   TMockProdutorNegociacaoRepository = class(TInterfacedObject, INegociacaoRepository)
@@ -180,6 +181,12 @@ function TMockProdutorLimiteCreditoRepository.ObterTodosPorProdutor(AIdProdutor:
 begin
   FLastOperation := 'ObterTodosPorProdutor';
   Result := TList<TPair<Integer, Currency>>.Create;
+end;
+
+function TMockProdutorLimiteCreditoRepository.PossuiDistribuidores(AIdProdutor: Integer): Boolean;
+begin
+  FLastOperation := 'PossuiDistribuidores';
+  Result := False;
 end;
 
 { TMockProdutorNegociacaoRepository }

@@ -1,4 +1,4 @@
-unit App.Views.Produtor.ViewCadastroProdutorDetail;
+Ôªøunit App.Views.Produtor.ViewCadastroProdutorDetail;
 
 interface
 
@@ -59,7 +59,7 @@ var
   LFieldIdDist: TIntegerField;
   LFieldValorLimite: TFloatField;
 begin
-  lblTitulo.Caption := 'Cadastro de Limite de CrÈdito de Produtores';
+  lblTitulo.Caption := 'Cadastro de Limite de Cr√©dito de Produtores';
 
   FDataSource.DataSet := TFDMemTable.Create(Self);
   TFDMemTable(FDataSource.DataSet).FieldDefs.Add('ID', ftInteger);
@@ -88,7 +88,7 @@ begin
   LFieldValorLimite := TFloatField.Create(Self);
   LFieldValorLimite.FieldName := 'VALOR_LIMITE';
   LFieldValorLimite.DataSet := FMemDetail;
-  LFieldValorLimite.DisplayLabel := 'Limite de CrÈdito';
+  LFieldValorLimite.DisplayLabel := 'Limite de Cr√©dito';
   LFieldValorLimite.DisplayFormat := 'R$ ,0.00';
 
   FMemDetailDistribuidor.FieldDefs.Add('ID', ftInteger);
@@ -245,7 +245,7 @@ begin
       if (LClone.RecNo <> DataSet.RecNo) and 
          (LClone.FieldByName('ID_DISTRIBUIDOR').AsInteger = DataSet.FieldByName('ID_DISTRIBUIDOR').AsInteger) then
       begin
-        TMessageValidation.Aviso('O mesmo distribuidor n„o pode ser adicionado mais de uma vez na lista de limites de crÈdito.');
+        TMessageValidation.Aviso('O mesmo distribuidor n√£o pode ser adicionado mais de uma vez na lista de limites de cr√©dito.');
         Abort;
       end;
       LClone.Next;
@@ -324,7 +324,7 @@ begin
   if FMemDetail.IsEmpty then
     Exit;
 
-  if TMessageValidation.Confirmar('Deseja remover o limite de crÈdito deste distribuidor?') then
+  if TMessageValidation.Confirmar('Deseja remover o limite de cr√©dito deste distribuidor?') then
   begin
     if FMemDetail.FieldByName('ID').AsInteger > 0 then
     begin
@@ -375,13 +375,19 @@ end;
 procedure TViewCadastroProdutorDetail.DoDeletar;
 var
   LMemTable: TFDMemTable;
+  LIdProdutor: Integer;
 begin
-  if TMessageValidation.Confirmar('Deseja realmente excluir este produtor e seus limites?') then
+  LMemTable := TFDMemTable(FDataSource.DataSet);
+  LIdProdutor := LMemTable.FieldByName('ID').AsInteger;
+
+  if TIoCContainer.ProdutorService.PossuiDistribuidores(LIdProdutor) then
   begin
-    LMemTable := TFDMemTable(FDataSource.DataSet);
-    TIoCContainer.ProdutorService.Excluir(LMemTable.FieldByName('ID').AsInteger);
-    LMemTable.Delete;
+    TMessageValidation.Aviso('N√£o √© poss√≠vel excluir o produtor pois existem distribuidores vinculados a este produtor.');
+    Exit;
   end;
+
+    TIoCContainer.ProdutorService.Excluir(LIdProdutor);
+    LMemTable.Delete;
 end;
 
 procedure TViewCadastroProdutorDetail.DoSalvar;

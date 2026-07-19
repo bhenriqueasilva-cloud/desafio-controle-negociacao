@@ -24,6 +24,7 @@ type
     function ObterPorId(AId: Integer): Currency;
     function ObterLimite(AIdProdutor, AIdDistribuidor: Integer; out AValorLimite: Currency): Integer;
     function ObterTodosPorProdutor(AIdProdutor: Integer): TList<TPair<Integer, Currency>>;
+    function PossuiDistribuidores(AIdProdutor: Integer): Boolean;
   end;
 
 implementation
@@ -226,6 +227,37 @@ begin
     except
       LConnection.Rollback;
       Result.Free;
+      raise;
+    end;
+  finally
+    LQuery.Free;
+  end;
+end;
+
+function TProdutorLimiteCreditoRepositoryFB.PossuiDistribuidores(AIdProdutor: Integer): Boolean;
+var
+  LQuery: TFDQuery;
+  LConnection: TFDConnection;
+begin
+  Result := False;
+  LConnection := TFDConnection(FConnectionFactory.GetConnection);
+
+  LQuery := TFDQuery.Create(nil);
+  try
+    LQuery.Connection := LConnection;
+    LConnection.StartTransaction;
+
+    try
+      LQuery.SQL.Text := 'SELECT COUNT(*) AS TOTAL FROM PRODUTOR_LIMITE_CREDITO WHERE ID_PRODUTOR = :ID_PRODUTOR';
+      LQuery.ParamByName('ID_PRODUTOR').AsInteger := AIdProdutor;
+      LQuery.Open;
+
+      if not LQuery.Eof then
+        Result := LQuery.FieldByName('TOTAL').AsInteger > 0;
+
+      LConnection.Commit;
+    except
+      LConnection.Rollback;
       raise;
     end;
   finally

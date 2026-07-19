@@ -45,6 +45,7 @@ type
     function ObterPorId(AId: Integer; out AValorProduto: Currency): Integer;
     function ObterPorDistribuidorProdutor(AIdDistribuidor, AIdProduto: Integer; out AValorProduto: Currency): Integer;
     function ObterTodosPorDistribuidor(AIdDistribuidor: Integer): TList<TRecordDistribuidorProduto>;
+    function PossuiProdutos(AIdDistribuidor: Integer): Boolean;
   end;
 
   [TestFixture]
@@ -194,6 +195,12 @@ function TMockDistribuidorProdutoRepository.ObterTodosPorDistribuidor(AIdDistrib
 begin
   FLastOperation := 'ObterTodosPorDistribuidor';
   Result := TList<TRecordDistribuidorProduto>.Create;
+end;
+
+function TMockDistribuidorProdutoRepository.PossuiProdutos(AIdDistribuidor: Integer): Boolean;
+begin
+  FLastOperation := 'PossuiProdutos';
+  Result := False;
 end;
 
 { TDistribuidorServiceTest }

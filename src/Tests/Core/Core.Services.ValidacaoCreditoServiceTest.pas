@@ -42,6 +42,7 @@ type
     function ObterPorId(AId: Integer): Currency;
     function ObterTodosPorProdutor(AIdProdutor: Integer): TList<TPair<Integer, Currency>>;
     function ObterLimite(AIdProdutor, AIdDistribuidor: Integer; out AValorLimite: Currency): Integer;
+    function PossuiDistribuidores(AIdProdutor: Integer): Boolean;
   end;
 
   [TestFixture]
@@ -104,6 +105,11 @@ function TMockLimiteCreditoRepository.ObterLimite(AIdProdutor, AIdDistribuidor: 
 begin
   AValorLimite := FValorLimite;
   if FValorLimite > 0 then Result := 1 else Result := 0;
+end;
+
+function TMockLimiteCreditoRepository.PossuiDistribuidores(AIdProdutor: Integer): Boolean;
+begin
+  Result := False;
 end;
 
 { TValidacaoCreditoServiceTest }

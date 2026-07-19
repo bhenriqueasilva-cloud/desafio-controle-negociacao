@@ -14,6 +14,7 @@ type
     function ObterPorId(AId: Integer): Currency;
     function ObterLimite(AIdProdutor, AIdDistribuidor: Integer; out AValorLimite: Currency): Integer;
     function ObterTodosPorProdutor(AIdProdutor: Integer): TList<TPair<Integer, Currency>>;
+    function PossuiDistribuidores(AIdProdutor: Integer): Boolean;
   end;
 
 implementation

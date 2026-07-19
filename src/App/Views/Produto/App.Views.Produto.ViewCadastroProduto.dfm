@@ -32,6 +32,12 @@ inherited ViewCadastroProduto: TViewCadastroProduto
         inherited edtPesquisa: TEdit
           StyleElements = [seFont, seClient, seBorder]
         end
+        inherited btnPesquisar: TButton
+          Left = 366
+          Top = 9
+          ExplicitLeft = 366
+          ExplicitTop = 9
+        end
       end
     end
     inherited tsDados: TTabSheet

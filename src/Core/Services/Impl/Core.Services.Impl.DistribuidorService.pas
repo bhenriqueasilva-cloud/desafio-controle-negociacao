@@ -1,4 +1,4 @@
-unit Core.Services.Impl.DistribuidorService;
+﻿unit Core.Services.Impl.DistribuidorService;
 
 interface
 
@@ -32,6 +32,7 @@ type
     function AtualizarDistribuidorProdutos(AId, AIdDistribuidor, AIdProduto: Integer; AValorProduto: Currency) : Boolean;
     function SalvarDistribuidorProdutos(AIdDistribuidor, AIdProduto: Integer ; AValorProduto: Currency) : Boolean;
     function ExcluirDistribuidorProduto(AIdDistribuidor, AIdProduto: Integer): Boolean;
+    function PossuiProdutos(AIdDistribuidor: Integer): Boolean;
   end;
 
 implementation
@@ -65,7 +66,7 @@ begin
   end;
 
   if not TCNPJValidator.Validar(LTextoLimpo) then
-    raise Exception.Create('CNPJ inv�lido.');
+    raise Exception.Create('CNPJ inválido.');
 
   ACnpj := LTextoLimpo;
 end;
@@ -142,5 +143,9 @@ begin
   Result := FDistribuidorProdutoRepository.Excluir(AIdDistribuidor, AIdProduto);
 end;
 
-end.
+function TDistribuidorService.PossuiProdutos(AIdDistribuidor: Integer): Boolean;
+begin
+  Result := FDistribuidorProdutoRepository.PossuiProdutos(AIdDistribuidor);
+end;
 
+end.

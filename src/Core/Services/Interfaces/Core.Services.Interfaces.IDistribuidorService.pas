@@ -21,6 +21,7 @@ type
     function SalvarDistribuidorProdutos(AIdDistribuidor, AIdProduto: Integer; AValorProduto: Currency) : Boolean;
     function AtualizarDistribuidorProdutos(AId, AIdDistribuidor, AIdProduto: Integer; AValorProduto: Currency) : Boolean;
     function ExcluirDistribuidorProduto(AIdDistribuidor, AIdProduto: Integer): Boolean;
+    function PossuiProdutos(AIdDistribuidor: Integer): Boolean;
   end;
 
 implementation

@@ -1,4 +1,4 @@
-unit Core.Services.Impl.ProdutorService;
+ï»¿unit Core.Services.Impl.ProdutorService;
 
 interface
 
@@ -17,11 +17,9 @@ type
   private
     FProdutorRepository: IProdutorRepository;
     FProdutorLimiteCreditoRepository: IProdutorLimiteCreditoRepository;
-    // CORREÇÃO 1: Adicionado o campo privado exigido pela regra de negócio
     FNegociacaoRepository: INegociacaoRepository;
     procedure ValidarDocumento(const ACpfCnpj: string);
   public
-    // CORREÇÃO 2: Ajustada a assinatura da interface para exigir os 3 parâmetros obrigatórios
     constructor Create(
       AProdutorRepository: IProdutorRepository;
       AProdutorLimiteCreditoRepository: IProdutorLimiteCreditoRepository;
@@ -40,6 +38,7 @@ type
     function SalvarProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer; AValorLimite: Currency): Boolean;
     function AtualizarProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer; AValorLimite: Currency): Boolean;
     function ExcluirProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer): Boolean;
+    function PossuiDistribuidores(AIdProdutor: Integer): Boolean;
   end;
 
 implementation
@@ -79,15 +78,15 @@ begin
   if Length(LTextoLimpo) = 11 then
   begin
     if not TCPFValidator.Validar(LTextoLimpo) then
-      raise Exception.Create('CPF informado é inválido.');
+      raise Exception.Create('CPF informado Ã© invÃ¡lido.');
   end
   else if Length(LTextoLimpo) = 14 then
   begin
     if not TCNPJValidator.Validar(LTextoLimpo) then
-      raise Exception.Create('CNPJ informado é inválido.');
+      raise Exception.Create('CNPJ informado Ã© invÃ¡lido.');
   end
   else
-    raise Exception.Create('O documento deve conter exatamente 11 dígitos para CPF ou 14 dígitos para CNPJ.');
+    raise Exception.Create('O documento deve conter exatamente 11 dÃ­gitos para CPF ou 14 dÃ­gitos para CNPJ.');
 end;
 
 function TProdutorService.Salvar(AProdutor: TProdutor): Boolean;
@@ -134,12 +133,12 @@ var
   LValorUtilizado: Currency;
 begin
   if AValorLimite <= 0 then
-    raise Exception.Create('Valor do limite de crédito deve ser maior que zero.');
+    raise Exception.Create('Valor do limite de crÃ©dito deve ser maior que zero.');
 
   LValorUtilizado := FNegociacaoRepository.ObterValorTotalAprovado(AIdProdutor, AIdDistribuidor);
   if AValorLimite < LValorUtilizado then
     raise Exception.CreateFmt(
-      'Não é possível definir o limite inicial para %s, pois o produtor já possui %s em negociações aprovadas.',
+      'NÃ£o Ã© possÃ­vel definir o limite inicial para %s, pois o produtor jÃ¡ possui %s em negociaÃ§Ãµes aprovadas.',
       [CurrToStr(AValorLimite), CurrToStr(LValorUtilizado)]
     );
 
@@ -151,13 +150,13 @@ var
   LValorUtilizado: Currency;
 begin
   if AValorLimite <= 0 then
-    raise Exception.Create('Valor do limite de crédito deve ser maior que zero.');
+    raise Exception.Create('Valor do limite de crÃ©dito deve ser maior que zero.');
 
   LValorUtilizado := FNegociacaoRepository.ObterValorTotalAprovado(AIdProdutor, AIdDistribuidor);
 
   if AValorLimite < LValorUtilizado then
     raise Exception.CreateFmt(
-      'Não é possível reduzir o limite para %s, pois o produtor já possui %s em negociações aprovadas com este distribuidor.',
+      'NÃ£o Ã© possÃ­vel reduzir o limite para %s, pois o produtor jÃ¡ possui %s em negociaÃ§Ãµes aprovadas com este distribuidor.',
       [CurrToStr(AValorLimite), CurrToStr(LValorUtilizado)]
     );
 
@@ -172,16 +171,21 @@ begin
 
   if LValorUtilizado > 0 then
     raise Exception.CreateFmt(
-      'Não é possível excluir o limite de crédito, pois o produtor já possui %s em negociações aprovadas com este distribuidor.',
+      'NÃ£o Ã© possÃ­vel excluir o limite de crÃ©dito, pois o produtor jÃ¡ possui %s em negociaÃ§Ãµes aprovadas com este distribuidor.',
       [CurrToStr(LValorUtilizado)]
     );
 
   Result := FProdutorLimiteCreditoRepository.Excluir(AIdProdutor, AIdDistribuidor);
 end;
+
 function TProdutorService.ObterProdutorLimiteCredito(AIdProdutor, AIdDistribuidor: Integer; out AValorLimite: Currency): Integer;
 begin
   Result := FProdutorLimiteCreditoRepository.ObterLimite(AIdProdutor, AIdDistribuidor, AValorLimite);
 end;
 
-end.
+function TProdutorService.PossuiDistribuidores(AIdProdutor: Integer): Boolean;
+begin
+  Result := FProdutorLimiteCreditoRepository.PossuiDistribuidores(AIdProdutor);
+end;
 
+end.
